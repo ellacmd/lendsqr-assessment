@@ -1,0 +1,29 @@
+.summary-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(33, 63, 125, 0.06);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 3px 5px 20px 0px #0000000a;
+
+    &__icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    &__title {
+        font-size: 14px;
+        margin-top: 2px;
+        text-transform: uppercase;
+        color: #545f7d;
+        font-weight: 500;
+    }
+
+    &__value {
+        font-size: 32px;
+        font-weight: 600;
+        color: #213f7d;
+    }
+}

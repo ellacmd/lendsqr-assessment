@@ -1,0 +1,42 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__title {
+        font-size: 24px;
+        font-weight: 500;
+        color: #213f7d;
+    }
+
+    &__summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 26px;
+    }
+
+    &__table {
+        margin-top: 8px;
+    }
+
+    &__pagination {
+        margin-top: -24px;
+    }
+}
+
+@media (max-width: 720px) {
+    .dashboard {
+        gap: 24px;
+
+        &__summary {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+    }
+}

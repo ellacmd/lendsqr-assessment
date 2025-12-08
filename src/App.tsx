@@ -5,7 +5,7 @@ import {
     Navigate,
 } from 'react-router-dom';
 import Login from '@/pages/Login/Login';
-import Dashboard from '@/pages/Dashboard';
+import Dashboard from '@/pages/Dashboard/Dashboard';
 import UserDetails from '@/pages/UserDetails';
 import MainLayout from '@/layouts/MainLayout';
 
