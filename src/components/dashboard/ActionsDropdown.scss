@@ -1,0 +1,48 @@
+@use '@/styles/variables' as *;
+
+.actions-dropdown {
+    position: absolute;
+    width: 180px;
+    min-height: 130px;
+    background-color: #ffffff;
+    border: 1px solid rgba(84, 95, 125, 0.04);
+    border-radius: 4px; 
+    box-shadow: 3px 5px 20px 0px #0000000A;
+    padding: 12px 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 10px 20px;
+        border: none;
+        background: none;
+        text-align: left;
+        font-size: 14px;
+        font-weight: 500;
+        color: $color-text;
+        font-family: 'Work Sans', sans-serif;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba(84, 95, 125, 0.04);
+        }
+
+        img {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        span {
+            flex: 1;
+        }
+    }
+}
+

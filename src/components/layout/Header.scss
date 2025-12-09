@@ -20,6 +20,7 @@
         border: none;
         cursor: pointer;
         padding: 0;
+        margin-left: auto;
 
         img {
             width: 24px;
@@ -34,6 +35,14 @@
 
         img {
             height: 32px;
+        }
+
+        &--mobile {
+            display: none;
+        }
+
+        &--desktop {
+            display: inline-flex;
         }
     }
 
@@ -147,14 +156,44 @@
 
 @media (max-width: 960px) {
     .app-header {
+        padding: 20px 24px;
+        gap: 16px;
+
         &__menu {
             display: inline-flex;
+            order: 3;
+        }
+
+        &__logo {
+            &--mobile {
+                display: inline-flex;
+                margin-right: 0;
+                order: 1;
+            }
+
+            &--desktop {
+                display: none;
+            }
         }
 
         &__search {
-            margin-left: 16px;
-            margin-right: auto;
+            order: 4;
             width: 100%;
+            margin: 0;
+        }
+
+        &__actions {
+            order: 2;
+            margin-left: 0;
+            gap: 16px;
+        }
+
+        &__docs {
+            display: none;
+        }
+
+        &__profile-text {
+            display: none;
         }
     }
 }
@@ -162,16 +201,49 @@
 @media (max-width: 720px) {
     .app-header {
         flex-wrap: wrap;
-        gap: 16px;
+        gap: 12px;
+        padding: 16px 20px;
+
+        &__logo {
+            &--mobile {
+                display: inline-flex;
+                margin-right: 0;
+                order: 1;
+            }
+
+            &--desktop {
+                display: none;
+            }
+        }
+
+        &__menu {
+            display: inline-flex;
+            order: 2;
+        }
 
         &__search {
-            order: 3;
+            order: 4;
             width: 100%;
+            margin: 0;
         }
 
         &__actions {
-            order: 2;
-            width: auto;
+            order: 3;
+            margin-left: 0;
+            gap: 12px;
+        }
+
+        &__docs {
+            display: none;
+        }
+
+        &__profile-text {
+            display: none;
+        }
+
+        &__avatar {
+            width: 40px;
+            height: 40px;
         }
     }
 }

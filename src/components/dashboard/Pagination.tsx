@@ -91,6 +91,10 @@ const Pagination = ({
         }
     };
 
+    if (totalItems === 0) {
+        return null;
+    }
+
     return (
         <div className='pagination'>
             <div className='pagination__info'>

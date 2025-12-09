@@ -27,3 +27,22 @@
         color: #213f7d;
     }
 }
+
+@media (max-width: 720px) {
+    .summary-card {
+        padding: 16px;
+
+        &__icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        &__title {
+            font-size: 12px;
+        }
+
+        &__value {
+            font-size: 24px;
+        }
+    }
+}

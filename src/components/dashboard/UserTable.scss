@@ -7,6 +7,13 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    position: relative;
+
+    &__empty-cell {
+        padding: 60px 20px !important;
+        text-align: center;
+        border: none !important;
+    }
 
     &__scroll {
         overflow-x: auto;
@@ -60,6 +67,29 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.7;
+        }
+
+        &--active {
+            opacity: 1;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__row {
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba(84, 95, 125, 0.02);
+        }
     }
 
     td {
@@ -78,6 +108,17 @@
         border: none;
         background: none;
         cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: rgba(84, 95, 125, 0.05);
+        }
+
+        &--active {
+            background-color: rgba(84, 95, 125, 0.1);
+        }
 
         img {
             width: 16px;

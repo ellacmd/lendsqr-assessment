@@ -158,7 +158,18 @@
 @media (max-width: 720px) {
     .pagination {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 12px;
+        justify-content: center;
+
+        &__info {
+            width: 100%;
+            justify-content: center;
+        }
+
+        &__controls {
+            width: 100%;
+            justify-content: center;
+        }
     }
 }

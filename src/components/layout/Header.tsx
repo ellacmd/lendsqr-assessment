@@ -3,23 +3,38 @@ import searchIcon from '@/assets/search.svg';
 import notificationIcon from '@/assets/notification.svg';
 import avatarImg from '@/assets/avatar.svg';
 import menuIcon from '@/assets/menu.svg';
+import closeIcon from '@/assets/close.svg';
 import logoSrc from '@/assets/lendsqr-logo.svg';
 import './Header.scss';
 import chevronDownIcon from '@/assets/chevron-down.svg';
 
-const Header = () => {
+type HeaderProps = {
+    onMenuClick?: () => void;
+    sidebarOpen?: boolean;
+};
+
+const Header = ({ onMenuClick, sidebarOpen = false }: HeaderProps) => {
     return (
         <header className='app-header'>
+            <Link
+                to='/dashboard'
+                className='app-header__logo app-header__logo--mobile'>
+                <img src={logoSrc} alt='Lendsqr' />
+            </Link>
+
+            <Link
+                to='/dashboard'
+                className='app-header__logo app-header__logo--desktop'>
+                <img src={logoSrc} alt='Lendsqr' />
+            </Link>
+
             <button
                 type='button'
                 className='app-header__menu'
-                aria-label='Menu'>
-                <img src={menuIcon} alt='' />
+                aria-label={sidebarOpen ? 'Close menu' : 'Menu'}
+                onClick={onMenuClick}>
+                <img src={sidebarOpen ? closeIcon : menuIcon} alt='' />
             </button>
-
-            <Link to='/dashboard' className='app-header__logo'>
-                <img src={logoSrc} alt='Lendsqr' />
-            </Link>
             <div className='app-header__search'>
                 <input
                     type='search'

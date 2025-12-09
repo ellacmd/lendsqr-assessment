@@ -7,11 +7,13 @@ import usersWithLoansIcon from '@/assets/users-with-loans.svg';
 import usersWithSavingsIcon from '@/assets/users-with-savings.svg';
 import numberOfUsersIcon from '@/assets/number-of-users.svg';
 import type { UserProfile } from '@/types/user.types';
+import type { FilterValues } from '@/components/dashboard/FilterDropdown';
 import './Dashboard.scss';
 
 const Dashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [filters, setFilters] = useState<FilterValues>({});
     const summaryCards = useMemo(
         () => [
             {
@@ -434,19 +436,82 @@ const Dashboard = () => {
         []
     );
 
-    const totalPages = Math.max(1, Math.ceil(users.length / itemsPerPage));
+    const filteredUsers = useMemo(() => {
+        if (Object.keys(filters).length === 0) {
+            return users;
+        }
+
+        return users.filter((user) => {
+            if (
+                filters.organization &&
+                user.organization !== filters.organization
+            ) {
+                return false;
+            }
+            if (
+                filters.username &&
+                !user.username
+                    .toLowerCase()
+                    .includes(filters.username.toLowerCase())
+            ) {
+                return false;
+            }
+            if (
+                filters.email &&
+                !user.email.toLowerCase().includes(filters.email.toLowerCase())
+            ) {
+                return false;
+            }
+            if (
+                filters.phoneNumber &&
+                !user.phoneNumber.includes(filters.phoneNumber)
+            ) {
+                return false;
+            }
+            if (filters.status && user.status !== filters.status) {
+                return false;
+            }
+            if (filters.dateJoined) {
+                const filterDate = new Date(filters.dateJoined);
+                const userDate = new Date(user.dateJoined);
+                if (
+                    userDate.getDate() !== filterDate.getDate() ||
+                    userDate.getMonth() !== filterDate.getMonth() ||
+                    userDate.getFullYear() !== filterDate.getFullYear()
+                ) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }, [users, filters]);
+
+    const totalPages = Math.max(
+        1,
+        Math.ceil(filteredUsers.length / itemsPerPage)
+    );
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedUsers = useMemo(
-        () => users.slice(startIndex, endIndex),
-        [users, startIndex, endIndex]
+        () => filteredUsers.slice(startIndex, endIndex),
+        [filteredUsers, startIndex, endIndex]
     );
 
     useEffect(() => {
         if (currentPage > totalPages) {
             setCurrentPage(1);
         }
-    }, [users.length, currentPage, totalPages, itemsPerPage]);
+    }, [filteredUsers.length, currentPage, totalPages, itemsPerPage]);
+
+    const handleFilter = (newFilters: FilterValues) => {
+        setFilters((prev) => ({ ...prev, ...newFilters }));
+        setCurrentPage(1);
+    };
+
+    const handleResetFilter = () => {
+        setFilters({});
+        setCurrentPage(1);
+    };
 
     return (
         <div className='dashboard'>
@@ -466,12 +531,17 @@ const Dashboard = () => {
             </section>
 
             <section className='dashboard__table'>
-                <UserTable users={paginatedUsers} />
+                <UserTable
+                    users={paginatedUsers}
+                    currentFilters={filters}
+                    onFilter={handleFilter}
+                    onResetFilter={handleResetFilter}
+                />
             </section>
 
             <div className='dashboard__pagination'>
                 <Pagination
-                    totalItems={users.length}
+                    totalItems={filteredUsers.length}
                     itemsPerPage={itemsPerPage}
                     currentPage={currentPage}
                     onPageChange={setCurrentPage}
