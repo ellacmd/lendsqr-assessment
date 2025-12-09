@@ -133,13 +133,19 @@ const UserTable = ({
     };
 
     const handleRowClick = (userId: string, event: React.MouseEvent) => {
-        // Don't navigate if clicking on the actions button or its dropdown
         const target = event.target as HTMLElement;
         if (
             target.closest('.user-table__more') ||
             target.closest('.actions-dropdown')
         ) {
             return;
+        }
+        const user = users.find((u) => u.id === userId);
+        if (user) {
+            sessionStorage.setItem(
+                `currentUser_${userId}`,
+                JSON.stringify(user)
+            );
         }
         navigate(`/users/${userId}`);
     };

@@ -1,4 +1,3 @@
-
 const UserDetails = () => {
     return (
         <div>

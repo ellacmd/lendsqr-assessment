@@ -49,6 +49,7 @@
         padding: 0 15px 18px;
         vertical-align: bottom;
         white-space: nowrap;
+        border-bottom: none;
     }
 
     &__head-cell {
@@ -93,11 +94,16 @@
     }
 
     td {
-        padding: 20px 15px;
+        padding: 14px 15px;
         border-top: 1px solid rgba(33, 63, 125, 0.06);
         font-size: 14px;
         color: #545f7d;
         white-space: nowrap;
+        line-height: 1.43;
+    }
+
+    tbody tr:first-child td {
+        border-top: none;
     }
 
     &__actions {

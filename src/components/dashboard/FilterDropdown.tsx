@@ -27,11 +27,62 @@ const FilterDropdown = ({
     onReset,
 }: FilterDropdownProps) => {
     const [filters, setFilters] = useState<FilterValues>(currentFilters);
+    const [organizations, setOrganizations] = useState<string[]>([]);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         setFilters(currentFilters);
     }, [currentFilters]);
+
+    useEffect(() => {
+        const getOrganizations = async () => {
+            try {
+                const db = await new Promise<IDBDatabase>((resolve, reject) => {
+                    const request = indexedDB.open('lendsqr_users', 1);
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onupgradeneeded = () => {
+                        const db = request.result;
+                        if (!db.objectStoreNames.contains('users')) {
+                            db.createObjectStore('users', { keyPath: 'id' });
+                        }
+                    };
+                });
+
+                const transaction = db.transaction(['users'], 'readonly');
+                const store = transaction.objectStore('users');
+                const request = store.getAll();
+
+                request.onsuccess = () => {
+                    const users = request.result;
+                    const uniqueOrgs = Array.from(
+                        new Set(users.map((u: any) => u.organization))
+                    ).sort() as string[];
+                    setOrganizations(uniqueOrgs);
+                };
+            } catch (error) {
+                try {
+                    const orgs = new Set<string>();
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key?.startsWith('user_')) {
+                            const user = JSON.parse(
+                                localStorage.getItem(key) || '{}'
+                            );
+                            if (user.organization) {
+                                orgs.add(user.organization);
+                            }
+                        }
+                    }
+                    setOrganizations(Array.from(orgs).sort());
+                } catch (err) {
+                    setOrganizations(['Lendsqr', 'Irorun', 'Paystack']);
+                }
+            }
+        };
+
+        getOrganizations();
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -84,9 +135,11 @@ const FilterDropdown = ({
                         handleInputChange('organization', e.target.value)
                     }>
                     <option value=''>Select</option>
-                    <option value='Lendsqr'>Lendsqr</option>
-                    <option value='Irorun'>Irorun</option>
-                    <option value='Paystack'>Paystack</option>
+                    {organizations.map((org) => (
+                        <option key={org} value={org}>
+                            {org}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -110,9 +163,7 @@ const FilterDropdown = ({
                     type='email'
                     placeholder='Email'
                     value={filters.email || ''}
-                    onChange={(e) =>
-                        handleInputChange('email', e.target.value)
-                    }
+                    onChange={(e) => handleInputChange('email', e.target.value)}
                 />
             </div>
 
@@ -179,4 +230,3 @@ const FilterDropdown = ({
 };
 
 export default FilterDropdown;
-

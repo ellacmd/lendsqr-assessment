@@ -10,9 +10,10 @@ type PaginationProps = {
     currentPage: number;
     onPageChange: (page: number) => void;
     onItemsPerPageChange: (itemsPerPage: number) => void;
+    displayedItems?: number;
 };
 
-const ITEMS_PER_PAGE_OPTIONS = [1, 2, 10, 20, 50, 100];
+const ITEMS_PER_PAGE_OPTIONS = [10, 20, 50, 100];
 
 const Pagination = ({
     totalItems,
@@ -20,11 +21,16 @@ const Pagination = ({
     currentPage,
     onPageChange,
     onItemsPerPageChange,
+    displayedItems,
 }: PaginationProps) => {
     const [showItemsDropdown, setShowItemsDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+
+    const actualDisplayedItems =
+        displayedItems ??
+        Math.min(itemsPerPage, totalItems - (currentPage - 1) * itemsPerPage);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -111,7 +117,7 @@ const Pagination = ({
                             }
                             aria-label='Select items per page'
                             aria-expanded={showItemsDropdown}>
-                            <strong>{itemsPerPage}</strong>
+                            <strong>{actualDisplayedItems}</strong>
                             <img src={chevronDownIcon} alt='' />
                         </button>
                         {showItemsDropdown && (

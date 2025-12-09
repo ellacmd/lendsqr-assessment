@@ -47,9 +47,9 @@ const Header = ({ onMenuClick, sidebarOpen = false }: HeaderProps) => {
             </div>
 
             <nav className='app-header__actions'>
-                <a href='/' className='app-header__docs'>
+                <p  className='app-header__docs'>
                     Docs
-                </a>
+                </p>
 
                 <button
                     type='button'
