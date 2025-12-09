@@ -149,13 +149,15 @@ const Sidebar = ({ isOpen = false, onClose }: SidebarProps) => {
                                     key={item.label}
                                     to={item.to}
                                     onClick={onClose}
-                                    className={({ isActive }) =>
-                                        `sidebar__link ${
-                                            isActive
+                                    className={({ isActive }) => {
+                                        const shouldBeActive =
+                                            item.label === 'Users' || isActive;
+                                        return `sidebar__link ${
+                                            shouldBeActive
                                                 ? 'sidebar__link--active'
                                                 : ''
-                                        }`
-                                    }>
+                                        }`;
+                                    }}>
                                     <span className='sidebar__link-icon'>
                                         <img src={item.icon} alt='' />
                                     </span>
