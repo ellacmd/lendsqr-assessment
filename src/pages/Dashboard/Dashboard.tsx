@@ -10,7 +10,7 @@ import numberOfUsersIcon from '@/assets/number-of-users.svg';
 import type { UserProfile } from '@/types/user.types';
 import type { FilterValues } from '@/components/dashboard/FilterDropdown';
 import { fetchUsers } from '@/api/users.api';
-import { saveAllUsers } from '@/utils/storage';
+import { saveAllUsers, getAllUsers } from '@/utils/storage';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -53,11 +53,26 @@ const Dashboard = () => {
     useEffect(() => {
         const loadUsers = async () => {
             try {
-                setLoading(true);
                 setError(null);
-                const fetchedUsers = await fetchUsers();
-                setUsers(fetchedUsers);
-                await saveAllUsers(fetchedUsers);
+                
+                const cachedUsers = await getAllUsers();
+                if (cachedUsers.length > 0) {
+                    setUsers(cachedUsers);
+                    setLoading(false);
+                } else {
+                    setLoading(true);
+                }
+
+                try {
+                    const fetchedUsers = await fetchUsers();
+                    setUsers(fetchedUsers);
+                    await saveAllUsers(fetchedUsers);
+                } catch (apiError) {
+                    if (cachedUsers.length === 0) {
+                        throw apiError;
+                    }
+                    console.warn('Failed to fetch fresh data from API, using cached data:', apiError);
+                }
             } catch (err) {
                 setError('Failed to load users. Please try again later.');
                 console.error('Error loading users:', err);

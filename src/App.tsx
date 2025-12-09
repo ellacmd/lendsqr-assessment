@@ -4,10 +4,10 @@ import {
     Route,
     Navigate,
 } from 'react-router-dom';
-import Login from '@/pages/Login/Login';
-import Dashboard from '@/pages/Dashboard/Dashboard';
-import UserDetails from '@/pages/UserDetails';
-import MainLayout from '@/layouts/MainLayout';
+import Login from '@/pages/login/Login';
+import Dashboard from '@/pages/dashboard/Dashboard';
+import UserDetails from '@/pages/user-details/UserDetails';
+import MainLayout from '@/layouts/main-layout/MainLayout';
 
 function App() {
     return (

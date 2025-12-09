@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
+import Sidebar from '@/layouts/main-layout/sidebar/Sidebar';
+import Header from '@/layouts/header/Header';
 import './MainLayout.scss';
 
 const MainLayout = () => {

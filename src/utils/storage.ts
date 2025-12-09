@@ -82,6 +82,42 @@ export const getUser = async (userId: string): Promise<UserProfile | null> => {
     }
 };
 
+export const getAllUsers = async (): Promise<UserProfile[]> => {
+    try {
+        const database = await initDB();
+        const transaction = database.transaction([STORE_NAME], 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.getAll();
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => {
+                resolve(request.result || []);
+            };
+            request.onerror = () => {
+                reject(request.error);
+            };
+        });
+    } catch (error) {
+        console.error('Error getting users from IndexedDB:', error);
+        try {
+            const users: UserProfile[] = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('user_')) {
+                    const userData = localStorage.getItem(key);
+                    if (userData) {
+                        users.push(JSON.parse(userData));
+                    }
+                }
+            }
+            return users;
+        } catch (localError) {
+            console.error('Error getting users from localStorage:', localError);
+            return [];
+        }
+    }
+};
+
 export const saveAllUsers = async (users: UserProfile[]): Promise<void> => {
     try {
         const database = await initDB();

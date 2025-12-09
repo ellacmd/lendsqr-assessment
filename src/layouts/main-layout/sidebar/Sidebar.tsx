@@ -1,4 +1,4 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import briefcaseIcon from '@/assets/briefcase.svg';
 import chevronDownIcon from '@/assets/chevron-down-line.svg';
@@ -84,6 +84,8 @@ const navSections: NavSection[] = [
 ];
 
 const Sidebar = ({ isOpen = false, onClose }: SidebarProps) => {
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
@@ -94,6 +96,13 @@ const Sidebar = ({ isOpen = false, onClose }: SidebarProps) => {
             document.body.style.overflow = '';
         };
     }, [isOpen]);
+
+    const handleLogout = () => {
+        navigate('/');
+        if (onClose) {
+            onClose();
+        }
+    };
 
     return (
         <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`}>
@@ -171,7 +180,10 @@ const Sidebar = ({ isOpen = false, onClose }: SidebarProps) => {
 
             <hr className='sidebar__divider' />
 
-            <button type='button' className='sidebar__logout'>
+            <button
+                type='button'
+                className='sidebar__logout'
+                onClick={handleLogout}>
                 <span className='sidebar__link-icon'>
                     <img src={logOutIcon} alt='' />
                 </span>
